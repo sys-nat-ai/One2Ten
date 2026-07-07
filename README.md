@@ -58,6 +58,38 @@ flowchart LR
 
 ## 🚀 Install
 
+### 🤖 Option A — let your AI agent install it
+
+Paste this prompt into any AI coding agent (Claude Code, Codex, Cursor,
+Gemini CLI, …) and it does everything itself:
+
+```text
+Install the "one2ten" skill from https://github.com/sys-nat-ai/One2Ten for me:
+
+1. Clone https://github.com/sys-nat-ai/One2Ten.git into a temporary directory.
+2. Find my agent's skills directory:
+   - Claude Code (personal): ~/.claude/skills/ on macOS/Linux, or
+     %USERPROFILE%\.claude\skills\ on Windows
+   - Or, if I ask for a project install: <project>/.claude/skills/
+   - Other agents: use your own skills/instructions location (e.g. append to
+     AGENTS.md / rules and keep the files alongside the project).
+3. Create a "one2ten" folder there and copy ONLY these from the clone:
+   SKILL.md and the entire references/ folder (planning.md, subagents.md,
+   n8n.md, make.md, supabase.md, code.md). Do NOT copy docs/, README.md,
+   or git metadata.
+4. Verify the install: the one2ten folder must contain SKILL.md (whose
+   frontmatter says "name: one2ten") plus 6 files under references/.
+   Show me the resulting file list.
+5. Delete the temporary clone.
+6. Tell me how to invoke it (/one2ten <ticket>) and that it activates in
+   new sessions.
+
+Do not modify any file contents. If a one2ten folder already exists, show me
+what differs before overwriting.
+```
+
+### ⌨️ Option B — install manually
+
 **Windows (PowerShell)**
 ```powershell
 git clone https://github.com/sys-nat-ai/One2Ten.git one2ten-skill
