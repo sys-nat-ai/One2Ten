@@ -36,6 +36,9 @@ single disciplined process for all of it:
   that proves it and its observed output
 - 🛡️ **Production-safe** — live assets are fetched before edits, rollback
   copies saved, destructive actions always ask first
+- 🧠 **Second-brain aware** — if the project lives in an Obsidian vault,
+  the skill reads the project's index note for context and keeps it
+  updated after every ticket
 
 ## 🔄 The Flow
 
@@ -75,10 +78,10 @@ Install the "one2ten" skill from https://github.com/sys-nat-ai/One2Ten for me:
      AGENTS.md / rules and keep the files alongside the project).
 3. Create a "one2ten" folder there and copy ONLY these from the clone:
    SKILL.md and the entire references/ folder (planning.md, subagents.md,
-   n8n.md, make.md, supabase.md, code.md). Do NOT copy docs/, README.md,
-   or git metadata.
+   n8n.md, make.md, supabase.md, code.md, vault.md). Do NOT copy docs/,
+   README.md, or git metadata.
 4. Verify the install: the one2ten folder must contain SKILL.md (whose
-   frontmatter says "name: one2ten") plus 6 files under references/.
+   frontmatter says "name: one2ten") plus 7 files under references/.
    Show me the resulting file list.
 5. Delete the temporary clone.
 6. Tell me how to invoke it (/one2ten <ticket>) and that it activates in
@@ -143,6 +146,7 @@ references/
   make.md                 # 🔧 Make MCP playbook
   supabase.md             # 🔧 Supabase MCP playbook
   code.md                 # 🔧 code / apps / Vapi playbook
+  vault.md                # 🧠 Obsidian vault playbook (index notes)
 docs/superpowers/         # 📜 design spec + implementation plan (history)
 ```
 
