@@ -1,6 +1,6 @@
 ---
 name: one2ten
-description: End-to-end AI-engineer ticket workflow - implement, do, or fix a task ticket across n8n, Make, Supabase, and code/Vapi via MCPs. Use when given a Zoho Projects task/issue, a pasted ticket or bug report, or asked to implement/fix/do a task end to end. Flow - Understand, Plan (one approval gate), Build (subagent-driven), Test (evidence required), Report (chat summary).
+description: Use when given a Zoho Projects task or issue, a pasted ticket or bug report, or asked to implement, do, or fix a task end to end across n8n workflows, Make scenarios, Supabase, code/apps, or Vapi voice agents via MCPs. Also use when resuming a ticket a previous session left unfinished (a .one2ten/ directory exists in the project).
 ---
 
 # One2Ten — Ticket Workflow
@@ -13,6 +13,13 @@ After that gate, run to completion unless a stop condition (below) fires.
 
 ## Phase 0 — Intake
 
+- **Resume check (always first):** look for `.one2ten/` in the working
+  project. If `.one2ten/plans/` holds a plan for THIS ticket and/or
+  `.one2ten/progress.md` has entries for it, this is a resumed run: read
+  both, trust the ledger and live state over your own memory, and re-enter
+  at the first incomplete point. An already-approved plan is NOT
+  re-approved; tasks in the ledger are NEVER re-run — jump to Build at the
+  first task missing from the ledger (or to Test if all tasks are ledgered).
 - **Zoho ticket:** if the input references a Zoho Projects task or issue,
   fetch it via the Zoho Projects MCP (`get_task_details`, `get_issue`; use
   portal/project lookups like `get_portals`, `get_projects_list` if IDs are
@@ -39,8 +46,9 @@ Load only what this ticket needs, at the phase that needs it:
 
 ## Phase 1 — Understand
 
-- Confirm the goal, the acceptance criteria (write them down — Test phase
-  verifies exactly these), and the affected systems.
+- Confirm the goal, the acceptance criteria (they become the plan's
+  `## Acceptance Criteria` section — Test phase verifies exactly these),
+  and the affected systems.
 - **Bugs get evidence first.** Before any planning: pull the failing
   executions and logs (see the platform playbook), reproduce the failure,
   and demonstrate the root cause. No fix is proposed until the cause is
@@ -77,7 +85,7 @@ Read `references/subagents.md` and orchestrate:
 
 ## Phase 4 — Test
 
-- Verify the **ticket's acceptance criteria end-to-end**, not just the
+- Verify the **plan's `## Acceptance Criteria` end-to-end**, not just the
   per-task checks: run the workflow/scenario for real, query the data,
   exercise the app flow. Platform specifics are in each playbook.
 - Dispatch a **final reviewer subagent** on the most capable model to audit
@@ -113,6 +121,8 @@ Use this shape:
 
 **Safe-change rules** (bind you and every subagent):
 - Fetch current state before editing anything live.
+- Save a rollback copy of any live asset (workflow JSON, blueprint,
+  function source, assistant config) to `.one2ten/briefs/` before editing.
 - Prefer additive changes over rewrites.
 - Validate before publishing (n8n `validate_workflow`, Make
   `validate_blueprint_schema`).

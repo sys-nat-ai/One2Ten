@@ -12,7 +12,10 @@ unrelated Make scenario).
 
 Before dispatching: extract the task's full text from the plan to
 `.one2ten/briefs/task-N-brief.md`. For code tasks, record the BASE commit
-(`git rev-parse HEAD`) — you need it for review.
+(`git rev-parse HEAD`) — you need it for review. Note the absolute path of
+this skill's platform playbook(s) for the task's systems
+(`references/n8n.md` / `make.md` / `supabase.md` / `code.md`) — the
+subagent cannot see them unless the dispatch names them.
 
 Dispatch prompt skeleton:
 
@@ -22,11 +25,16 @@ Dispatch prompt skeleton:
 Read .one2ten/briefs/task-N-brief.md first — it is your requirements, with
 the exact values to use verbatim.
 
+Then read <absolute playbook path(s)> — the platform playbook's rules
+(rollback copies, validation calls, never guessing parameters or IDs)
+bind you.
+
 Context from earlier tasks: <interfaces/decisions the brief cannot know>
 
-Safe-change rules: fetch current state before editing anything live; prefer
-additive changes; validate before publishing; never deactivate/delete
-production assets.
+Safe-change rules: fetch current state before editing anything live; save a
+rollback copy of any live asset to .one2ten/briefs/ before editing it;
+prefer additive changes; validate before publishing; never
+deactivate/delete production assets.
 
 Write your full report to .one2ten/briefs/task-N-report.md (what you did,
 tool calls/commands run, their observed outputs). Return ONLY: a status,
@@ -51,8 +59,8 @@ Status vocabulary:
 
 ## Reviewer dispatch (after every task)
 
-The reviewer gets: the brief path, the report path, and the change
-evidence. It must return TWO verdicts — **spec compliance** (everything in
+The reviewer gets: the brief path, the report path, the relevant platform
+playbook path(s), and the change evidence. It must return TWO verdicts — **spec compliance** (everything in
 the brief done, nothing extra) and **quality** — plus findings rated
 Critical / Important / Minor.
 
@@ -73,7 +81,8 @@ severity in the dispatch.
 ## Fix loop
 
 - Critical/Important findings → dispatch a fix subagent with the complete
-  findings list (one fixer, not one per finding); it appends its fix report
+  findings list plus the same brief and playbook paths as the implementer
+  (one fixer, not one per finding); it appends its fix report
   with re-run verification to the same report file → re-dispatch the
   reviewer. Repeat until clean.
 - Minor findings → record in the ledger; the final reviewer triages them.

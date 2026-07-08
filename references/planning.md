@@ -16,6 +16,10 @@ own task, so every task must be self-sufficient.
 ## Global Constraints
 <exact values from the ticket, one per line: URLs, IDs, credential names,
 formats, copy text. Every task implicitly includes these.>
+
+## Acceptance Criteria
+<numbered, testable criteria from the Understand phase. The Test phase
+verifies exactly these — if it is not listed here, it will not be tested.>
 ```
 
 ## Task structure
@@ -56,7 +60,9 @@ formats, copy text. Every task implicitly includes these.>
 
 ## Self-review (before presenting the plan)
 
-1. **Coverage:** every ticket requirement maps to a task. List gaps and fix.
+1. **Coverage:** every ticket requirement maps to a task, and every
+   acceptance criterion is verifiable by a Verify step or the Test phase.
+   List gaps and fix.
 2. **Placeholder scan:** search the plan for the failure patterns above.
 3. **Consistency:** names, IDs, signatures, and field shapes used in later
    tasks match what earlier tasks define — exactly.

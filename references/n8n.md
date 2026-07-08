@@ -1,5 +1,11 @@
 # n8n Playbook
 
+Tool names below are the official n8n MCP server's. If the connected server
+exposes different names (e.g. `n8n_get_workflow`, `n8n_update_partial_workflow`,
+`n8n_validate_workflow`), map by purpose — the sequence (fetch full state →
+save rollback copy → validate → test → publish) is mandatory; the exact tool
+names are not.
+
 ## Explore first (Understand / Plan phases)
 
 - `search_workflows` → find the workflow; `get_workflow_details` → fetch
