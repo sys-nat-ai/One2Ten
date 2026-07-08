@@ -20,6 +20,10 @@ After that gate, run to completion unless a stop condition (below) fires.
   at the first incomplete point. An already-approved plan is NOT
   re-approved; tasks in the ledger are NEVER re-run — jump to Build at the
   first task missing from the ledger (or to Test if all tasks are ledgered).
+- **Vault check:** walk up from the working project for an `.obsidian/`
+  directory. Inside an Obsidian vault → read `references/vault.md`, then
+  read the project's index note (`Projects/<project>.md` in the vault) —
+  its assets, conventions, and open follow-ups are Understand/Plan input.
 - **Zoho ticket:** if the input references a Zoho Projects task or issue,
   fetch it via the Zoho Projects MCP (`get_task_details`, `get_issue`; use
   portal/project lookups like `get_portals`, `get_projects_list` if IDs are
@@ -43,6 +47,7 @@ Load only what this ticket needs, at the phase that needs it:
 | Ticket touches Make | `references/make.md` |
 | Ticket touches Supabase | `references/supabase.md` |
 | Ticket touches code / apps / Vapi | `references/code.md` |
+| Project is inside an Obsidian vault (`.obsidian/` in an ancestor) | `references/vault.md` |
 
 ## Phase 1 — Understand
 
@@ -98,6 +103,9 @@ Read `references/subagents.md` and orchestrate:
 ## Phase 5 — Report
 
 Chat summary only — no automatic Zoho updates; Nat updates the tracker.
+In vault mode, also update the project's index note per
+`references/vault.md`, and end the Report with a **Vault note updated**
+section quoting exactly the lines added or changed.
 Use this shape:
 
 ```
