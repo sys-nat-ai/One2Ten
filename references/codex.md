@@ -31,14 +31,19 @@ reviewers stay Claude subagents — the final Codex review backstops them.
    `.one2ten/briefs/codex-<checkpoint>-round-<N>-prompt.md`
    (`<checkpoint>` ∈ `plan`, `final`). Prompts embed whole documents — a
    file avoids shell-quoting damage.
-2. Run with a 10-minute timeout:
+2. Run with a 10-minute timeout — set the shell tool's timeout to
+   600000 ms (the default 2-minute timeout cuts long reviews off and
+   silently triggers the fallback):
 
 ```bash
 _ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
-codex exec "$(cat .one2ten/briefs/codex-<checkpoint>-round-<N>-prompt.md)" \
+timeout 600 codex exec "$(cat .one2ten/briefs/codex-<checkpoint>-round-<N>-prompt.md)" \
   -C "$_ROOT" -s read-only \
   > .one2ten/briefs/codex-<checkpoint>-round-<N>.md
 ```
+
+(If `timeout` is unavailable on the host, drop the prefix — the shell
+tool's 600000 ms timeout is the backstop.)
 
 3. Read the saved output file — it is the review of record.
 

@@ -136,7 +136,8 @@ cp -r one2ten-skill/references ~/.claude/skills/one2ten/
 - 🔁 Session died mid-ticket? Re-invoke it — the `.one2ten/progress.md`
   ledger prevents redoing completed tasks
 - ⏸️ After plan approval it only interrupts for: destructive actions,
-  missing credentials, genuine ambiguity, or an unresolvable blocker
+  missing credentials, genuine ambiguity, an unresolvable blocker, or a
+  Codex challenge still failing after 3 rounds
 
 ## 🗂️ Repo layout
 
