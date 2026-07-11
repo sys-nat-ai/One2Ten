@@ -24,6 +24,14 @@ After that gate, run to completion unless a stop condition (below) fires.
   directory. Inside an Obsidian vault → read `references/vault.md`, then
   read the project's index note (`Projects/<project>.md` in the vault) —
   its assets, conventions, and open follow-ups are Understand/Plan input.
+- **Codex check:** probe for the Codex CLI (`command -v codex`). Found →
+  Codex mode ON: Codex independently challenges the plan (Phase 2) and
+  the final change set (Phase 4) per `references/codex.md`. Not found (or
+  auth fails at first use) → ask ONCE: install it (`npm install -g
+  @openai/codex`, then `codex login`) or run this ticket with Claude
+  self-review as fallback. Record the outcome as the first line of
+  `.one2ten/progress.md` (`Codex mode: on` / `Codex mode: fallback
+  (<reason>)`); never re-ask mid-run.
 - **Zoho ticket:** if the input references a Zoho Projects task or issue,
   fetch it via the Zoho Projects MCP (`get_task_details`, `get_issue`; use
   portal/project lookups like `get_portals`, `get_projects_list` if IDs are
@@ -48,6 +56,7 @@ Load only what this ticket needs, at the phase that needs it:
 | Ticket touches Supabase | `references/supabase.md` |
 | Ticket touches code / apps / Vapi | `references/code.md` |
 | Project is inside an Obsidian vault (`.obsidian/` in an ancestor) | `references/vault.md` |
+| Codex mode is on (or still undecided) | `references/codex.md` (at Plan and Test) |
 
 ## Phase 1 — Understand
 
@@ -71,8 +80,12 @@ Load only what this ticket needs, at the phase that needs it:
 3. Write the plan to `.one2ten/plans/YYYY-MM-DD-<ticket-slug>.md` in the
    working project, following the planning reference exactly.
 4. Self-review the plan (coverage, placeholders, name/ID consistency).
-5. **GATE:** present a short plan summary and the plan file path. Wait for
-   approval. This is the only routine stop in the whole run.
+5. **Codex challenge (Codex mode):** run the plan-challenge loop per
+   `references/codex.md` — fix Critical/Important findings and
+   re-challenge until `VERDICT: PASS` (or Minor-only), max 3 rounds.
+6. **GATE:** present a short plan summary, the plan file path, and the
+   Codex verdict + round count (or the fallback note). Wait for approval.
+   This is the only routine stop in the whole run.
 
 ## Phase 3 — Build
 
@@ -93,9 +106,13 @@ Read `references/subagents.md` and orchestrate:
 - Verify the **plan's `## Acceptance Criteria` end-to-end**, not just the
   per-task checks: run the workflow/scenario for real, query the data,
   exercise the app flow. Platform specifics are in each playbook.
-- Dispatch a **final reviewer subagent** on the most capable model to audit
-  the whole change set (full branch diff for code; live-state audit for
-  MCP work).
+- **Final whole-change review:** in Codex mode, run the final challenge
+  loop per `references/codex.md` (branch diff for code; exported live
+  state for MCP work), fixing and re-challenging until PASS, max 3
+  rounds. Fallback (Codex unavailable, declined, or errored): dispatch a
+  **final reviewer subagent** on the most capable model to audit the
+  whole change set (full branch diff for code; live-state audit for MCP
+  work).
 - **Evidence rule:** every "it works" claim must carry the tool call or
   command AND its observed output. No evidence, no claim.
 - Loop fix-and-retest until green.
@@ -118,6 +135,9 @@ Use this shape:
 
 **How it was verified** (evidence)
 - <tool call / command> → <observed result>
+
+**Challenged by:** <Codex — plan: N round(s), final: N round(s) (PASS) |
+Claude self-review (<reason>)>
 
 **Root cause** (bugs only, one sentence)
 
@@ -144,6 +164,8 @@ Use this shape:
 - Missing credentials or access — name exactly what is needed, then stop.
 - Genuine requirement ambiguity that changes what gets built.
 - A BLOCKED subagent status the orchestrator cannot resolve.
+- A Codex challenge still returns FAIL after 3 rounds — surface the
+  unresolved findings verbatim with the round-file paths.
 
 **Always:**
 - Never report done without Phase 4 evidence.
