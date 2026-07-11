@@ -56,7 +56,7 @@ Load only what this ticket needs, at the phase that needs it:
 | Ticket touches Supabase | `references/supabase.md` |
 | Ticket touches code / apps / Vapi | `references/code.md` |
 | Project is inside an Obsidian vault (`.obsidian/` in an ancestor) | `references/vault.md` |
-| Codex mode is on (or still undecided) | `references/codex.md` (at Plan and Test) |
+| Codex mode is on (or still undecided) | `references/codex.md` (at Intake, Plan, and Test) |
 
 ## Phase 1 — Understand
 

@@ -17,9 +17,13 @@ reviewers stay Claude subagents — the final Codex review backstops them.
   > `npm install -g @openai/codex` then `codex login` — or run this
   > ticket with Claude self-review as the fallback?
 - Found but auth fails at first use → same ask, quoting the auth error.
-- Record the outcome as the FIRST line of `.one2ten/progress.md`:
-  `Codex mode: on` or `Codex mode: fallback (not installed | declined |
-  auth failed)`. Resumed runs trust this line; never re-ask mid-run.
+- If they choose install: wait for the install and `codex login` to
+  finish, re-probe, then proceed (mode ON on success).
+- Record the outcome as the FIRST line of `.one2ten/progress.md`
+  (create `.one2ten/` if it doesn't exist yet), picking ONE reason:
+  `Codex mode: on` or `Codex mode: fallback (declined | auth failed |
+  not installed)` — `declined` when the user chose the fallback at the
+  ask. Resumed runs trust this line; never re-ask mid-run.
 
 ## Invocation pattern (both checkpoints)
 
@@ -130,7 +134,9 @@ line, each with one line on what it is>
 1. Challenge; save the round file.
 2. `VERDICT: PASS`, or FAIL with only Minor findings → the checkpoint
    clears. Minors: plan gate → noted in the gate summary; final → listed
-   under the Report's Follow-ups / risks.
+   under the Report's Follow-ups / risks. A PASS whose findings still
+   include a Critical/Important item is a FAIL — the findings govern,
+   not the verdict line.
 3. FAIL with Critical/Important findings → fix them (plan gate: edit the
    plan; final: run the normal fix loop from `references/subagents.md`),
    then re-challenge. The round N+1 prompt appends a section
@@ -141,7 +147,9 @@ line, each with one line on what it is>
 
 Never silently overrule a Critical/Important Codex finding. If you believe
 a finding is wrong, that disagreement goes to the human — at the gate
-(plan) or as a stop (final) — never self-adjudicated.
+(plan) or as a stop (final) — never self-adjudicated. Disputing a finding
+ends the loop early: present the disagreement instead of fixing it; don't
+burn the remaining rounds.
 
 ## Fallback (Codex mode off, or Codex errored)
 
