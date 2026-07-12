@@ -116,6 +116,31 @@ cp -r one2ten-skill/references ~/.claude/skills/one2ten/
 > `<project>/.claude/skills/one2ten/` instead. New Claude Code sessions
 > pick it up automatically.
 
+## 🔄 Update
+
+The install copies files, so updating means re-running the install:
+
+- 🤖 **Agent install (Option A)** — paste the same install prompt again;
+  it already diffs your existing `one2ten` folder before overwriting.
+- ⌨️ **Manual (Option B)** — re-run the same commands; the copies
+  overwrite the old files. (If a release ever *removes* a reference
+  file, delete the leftover from your install too.)
+- 🐙 **Git-native — one-command updates.** Clone the repo straight into
+  the skills directory once, then updating is a single `git pull`:
+
+  ```bash
+  git clone https://github.com/sys-nat-ai/One2Ten.git ~/.claude/skills/one2ten
+  # update any time:
+  git -C ~/.claude/skills/one2ten pull
+  ```
+
+  (Windows: clone into `%USERPROFILE%\.claude\skills\one2ten`.) Claude
+  Code reads only `SKILL.md` + `references/`, so the repo's extra files
+  are harmless — the trade-off for `git pull` updates and `git log`
+  version visibility.
+
+Updates take effect in **new** Claude Code sessions.
+
 ## 🎮 Use
 
 ```text
